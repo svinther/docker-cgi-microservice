@@ -5,7 +5,6 @@ echo
 
 echo Hello from abstract microservice
 echo
-echo Override this script by overriding /var/www/html/cgi-bin/service.sh
+echo Override this script by overriding /usr/lib/cgi-bin/service.sh
 
 echo -------------------------
-printenv
