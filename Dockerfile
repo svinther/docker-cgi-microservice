@@ -12,9 +12,9 @@ RUN apt -y update \
 # log everything to stdout
 RUN  lighttpd-enable-mod cgi \
 && lighttpd-enable-mod rewrite \
-&& sed -i 's%^server.errorlog.*%server.errorlog = "/dev/pts/0"%' /etc/lighttpd/lighttpd.conf \
+&& sed -i 's%^server.errorlog.*%server.errorlog = "/tmp/logpipe"%' /etc/lighttpd/lighttpd.conf \
 && echo 'server.modules += ( "mod_accesslog" )' >> /etc/lighttpd/lighttpd.conf \
-&& echo 'accesslog.filename = "/dev/pts/0"' >> /etc/lighttpd/lighttpd.conf \
+&& echo 'accesslog.filename = "/tmp/logpipe"' >> /etc/lighttpd/lighttpd.conf \
 && echo 'url.rewrite-once += ( "^/$" => "/cgi-bin/service.sh" )' >> /etc/lighttpd/lighttpd.conf 
 
 ADD service.sh /usr/lib/cgi-bin/
@@ -23,8 +23,11 @@ RUN chmod +x /usr/lib/cgi-bin/service.sh
 EXPOSE 80
 
 RUN mkdir /poorman-init.d/
-ADD lighttpd-start.sh /poorman-init.d/
-RUN chmod +x /poorman-init.d/lighttpd-start.sh
+ADD 10-logpipe.sh /poorman-init.d/
+ADD 20-lighttpd-start.sh /poorman-init.d/
+RUN chmod +x /poorman-init.d/10-logpipe.sh && chmod +x /poorman-init.d/20-lighttpd-start.sh
+
+
 
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
