@@ -1,6 +1,6 @@
 FROM debian:10.3-slim
 
-LABEL maintainer="Steffen Vinther Sørensen <svinther@gmail.com>"
+LABEL maintainer="Steffen Vinther Sørensen <svs@logiva.dk>"
 
 RUN apt -y update \
 && apt -y install lighttpd procps \
