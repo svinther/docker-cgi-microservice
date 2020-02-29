@@ -2,12 +2,10 @@ FROM debian:10.3-slim
 
 LABEL maintainer="Steffen Vinther Sørensen <svinther@gmail.com>"
 
-# libterm-readline-perl-perl only needed to enable the lighttpd mods, then it can be uninstalled, 
-# and hence free up some space
 RUN apt -y update && apt -y install \
 lighttpd \
-&& lighty-enable-mod cgi \
-&& lighty-enable-mod rewrite \
+&& lighttpd-enable-mod cgi \
+&& lighttpd-enable-mod rewrite \
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean
 
