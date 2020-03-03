@@ -17,16 +17,17 @@ RUN  lighttpd-enable-mod cgi \
 && echo 'accesslog.filename = "/tmp/logpipe"' >> /etc/lighttpd/lighttpd.conf \
 && echo 'url.rewrite-once += ( "^/$" => "/cgi-bin/service.sh" )' >> /etc/lighttpd/lighttpd.conf 
 
+# Add the default service cgi script
 ADD service.sh /usr/lib/cgi-bin/
 RUN chmod +x /usr/lib/cgi-bin/service.sh
 
 EXPOSE 80
 
+# Create the poor mans init system
 RUN mkdir /poorman-init.d/
 ADD 10-logpipe.sh /poorman-init.d/
 ADD 20-lighttpd-start.sh /poorman-init.d/
 RUN chmod +x /poorman-init.d/10-logpipe.sh && chmod +x /poorman-init.d/20-lighttpd-start.sh
-
 
 
 ADD entrypoint.sh /
